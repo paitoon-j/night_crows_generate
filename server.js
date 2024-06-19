@@ -1,12 +1,9 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI("AIzaSyBTlkCDb-GRcwP7Sz6VYiT4NjZM8l8ESDM");
 const fs = require("fs").promises;
-const http = require('http');
-const hostname = '192.168.1.103'; // ใช้ IP address ของคุณ
 const express = require("express");
 const multer = require("multer");
 const path = require('path');
-const port = 3000;
 const server = express();
 const upload = multer({ dest: "uploads/" });
 
@@ -50,6 +47,7 @@ server.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-  });
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
