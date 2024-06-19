@@ -101,8 +101,8 @@ h2 {
 }
 
 #imagePreview {
-  max-width: 200px;
-  margin-top: 10px;
+  max-width: auto;
+  margin-top: auto;
   display: block;
   margin: 10px auto;
 }
