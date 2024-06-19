@@ -9,62 +9,62 @@ form.addEventListener('submit', async (event) => {
   const formData = new FormData(form);
   const response = await fetch('/upload', { method: 'POST', body: formData });
 
-  if (!response.ok) {
+  if (response.ok) {
+    let count = 1;
+    const extractedName = await response.text();
+    const mapName = this.mapNameList(extractedName);
+    const data = this.getItemFormData(formData, mapName);
+    const splitItem = this.getSplitItem(data);
+    const user = shuffleArray(mapName);
+
+    if (mapName.length < splitItem.length) {
+      resultDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
+      throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
+    }
+
+    for (let i = 0; i < splitItem.length; i++) {
+      if (i < splitItem.length) {
+        const replace = splitItem[i].name.replace("Item", "");
+        userList.push({
+          id: count + i,
+          name: user[i],
+          item: splitItem[i].name,
+          amount: splitItem[i].amount,
+          image: `/assets/${replace}.png`
+        });
+      }
+    }
+
+    // สร้างตาราง HTML
+    const table = document.createElement('table');
+    const headerRow = table.insertRow();
+    headerRow.insertCell().textContent = 'ลำดับ';
+    headerRow.insertCell().textContent = 'ชื่อ';
+    headerRow.insertCell().textContent = 'รายการ';
+    headerRow.insertCell().textContent = 'จำนวน';
+
+    for (const user of userList) {
+      const row = table.insertRow();
+      row.insertCell().textContent = user.id;
+      row.insertCell().textContent = user.name;
+
+      const imageCell = row.insertCell();
+      const img = document.createElement('img');
+      img.src = user.image;
+      img.alt = user.name;
+      img.style.width = '50px';
+      imageCell.appendChild(img);
+
+      row.insertCell().textContent = user.amount;
+    }
+
+    resultDiv.innerHTML = ''; // ล้างเนื้อหาเดิม
+    resultDiv.appendChild(table);
+  }
+  else {
     resultDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
     throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
   }
-
-  const extractedName = await response.text();
-  const mapName = this.mapNameList(extractedName);
-  const data = this.getItemFormData(formData, mapName);
-  const splitItem = this.getSplitItem(data);
-  const user = shuffleArray(mapName);
-
-  let count = 1;
-
-  if (mapName.length < splitItem.length) {
-    resultDiv.textContent = 'จำนวนคนน้อยกว่าจำนวนไอเท็ม';
-    throw new Error('จำนวนคนน้อยกว่าจำนวนไอเท็ม');
-  }
-
-  for (let i = 0; i < splitItem.length; i++) {
-    if (i < splitItem.length) {
-      const replace = splitItem[i].name.replace("Item", "");
-      userList.push({
-        id: count + i,
-        name: user[i],
-        item: splitItem[i].name,
-        amount: splitItem[i].amount,
-        image: `/assets/${replace}.png`
-      });
-    }
-  }
-
-  // สร้างตาราง HTML
-  const table = document.createElement('table');
-  const headerRow = table.insertRow();
-  headerRow.insertCell().textContent = 'ลำดับ';
-  headerRow.insertCell().textContent = 'ชื่อ';
-  headerRow.insertCell().textContent = 'รายการ';
-  headerRow.insertCell().textContent = 'จำนวน';
-
-  for (const user of userList) {
-    const row = table.insertRow();
-    row.insertCell().textContent = user.id;
-    row.insertCell().textContent = user.name;
-
-    const imageCell = row.insertCell();
-    const img = document.createElement('img');
-    img.src = user.image;
-    img.alt = user.name;
-    img.style.width = '50px';
-    imageCell.appendChild(img);
-
-    row.insertCell().textContent = user.amount;
-  }
-
-  resultDiv.innerHTML = ''; // ล้างเนื้อหาเดิม
-  resultDiv.appendChild(table);
 });
 
 function mapNameList(extractedName) {
@@ -91,6 +91,10 @@ function getSplitItem(data) {
       remainingItemCount--;
 
       if (element.name == "monneyItem") {
+        amount = monneyAmount.toFixed(2)
+      }
+
+      if (element.name == "coinguildItem") {
         amount = monneyAmount.toFixed(2)
       }
 
