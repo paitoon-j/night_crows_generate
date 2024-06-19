@@ -73,7 +73,8 @@ function mapNameList(extractedName) {
   const nameList = [];
   nameList.push(extractedName);
   const arr = extractedName.split("-");
-  const cleanedArr = arr.filter(item => item.trim() !== '').map(item => item.trim());
+  const cleanedArr = arr.filter(item => item.trim() !== '')
+    .map(item => item.replace(/```/g, '').trim());
   return cleanedArr;
 }
 
