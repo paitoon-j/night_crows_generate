@@ -17,6 +17,8 @@ form.addEventListener('submit', async (event) => {
     const splitItem = this.getSplitItem(data);
     const user = shuffleArray(mapName);
 
+    console.log(extractedName);
+
     if (mapName.length < splitItem.length) {
       resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
       throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
