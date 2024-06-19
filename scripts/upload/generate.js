@@ -19,7 +19,7 @@ form.addEventListener('submit', async (event) => {
   const data = this.getItemFormData(formData, mapName);
   const splitItem = this.getSplitItem(data);
   const user = shuffleArray(mapName);
-  console.log(splitItem);
+
   let count = 1;
 
   if (mapName.length < splitItem.length) {
