@@ -7,6 +7,7 @@ const path = require('path');
 const server = express();
 const upload = multer({ dest: "uploads/" });
 
+
 server.use(express.static("scripts"));
 server.use(express.static(path.join(__dirname, 'public')));
 
@@ -48,6 +49,6 @@ server.get('/', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
