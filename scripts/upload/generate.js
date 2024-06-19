@@ -17,9 +17,9 @@ form.addEventListener('submit', async (event) => {
   const extractedName = await response.text();
   const mapName = this.mapNameList(extractedName);
   const data = this.getItemFormData(formData, mapName);
-  const peopleCount = this.getTotalPeopleCount(data);
   const splitItem = this.getSplitItem(data);
   const user = shuffleArray(mapName);
+  console.log(splitItem);
   let count = 1;
 
   if (mapName.length < splitItem.length) {
@@ -27,7 +27,7 @@ form.addEventListener('submit', async (event) => {
     throw new Error('จำนวนคนน้อยกว่าจำนวนไอเท็ม');
   }
 
-  for (let i = 0; i < peopleCount; i++) {
+  for (let i = 0; i < splitItem.length; i++) {
     if (i < splitItem.length) {
       const replace = splitItem[i].name.replace("Item", "");
       userList.push({
@@ -80,7 +80,8 @@ function getSplitItem(data) {
   for (let i = 0; i < data.length; i++) {
     const element = data[i];
     let remainingItemCount = element.itemCount;
-    let baseAmount = Math.floor(element.itemCount / element.peopleCount); // จำนวนพื้นฐานที่แต่ละคนจะได้รับ
+    let baseAmount = Math.floor(element.itemCount / element.peopleCount);
+    let monneyAmount = element.itemCount / element.peopleCount;
 
     for (let j = 0; j < element.peopleCount; j++) {
       let amount = baseAmount;
@@ -89,22 +90,18 @@ function getSplitItem(data) {
       }
       remainingItemCount--;
 
+      if (element.name == "monneyItem") {
+        amount = monneyAmount.toFixed(2)
+      }
+
       list.push({
         name: element.name,
         amount: amount,
       });
     }
+
   }
   return list;
-}
-
-function getTotalPeopleCount(data) {
-  let peopleCount = 0;
-  data.forEach(item => {
-    peopleCount += Number(item.itemCount);
-  });
-
-  return peopleCount;
 }
 
 function getItemFormData(formData, mapName) {
@@ -163,7 +160,8 @@ function getItemFormData(formData, mapName) {
   }
 
   list.push(monneyList);
-  const filter = list.filter(x => x.peopleCount > 0 || x.name != "monneyItem");
+
+  const filter = list.filter(x => x.peopleCount > 0);
   return filter;
 }
 
