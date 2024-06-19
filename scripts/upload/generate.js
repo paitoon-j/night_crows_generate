@@ -17,6 +17,8 @@ form.addEventListener('submit', async (event) => {
     const splitItem = this.getSplitItem(data);
     const user = shuffleArray(mapName);
 
+    console.log(extractedName);
+
     if (mapName.length < splitItem.length) {
       resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
       throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
@@ -109,47 +111,85 @@ function getSplitItem(data) {
 }
 
 function getItemFormData(formData, mapName) {
-  const list = [{
-    name: "blueItem",
-    itemCount: formData.get('blueItemCount'),
-    peopleCount: formData.get('bluePeopleCount'),
-  }, {
-    name: "papirusItem",
-    itemCount: formData.get('papirusItemCount'),
-    peopleCount: formData.get('papirusPeopleCount'),
-  }, {
-    name: "purpleItem",
-    itemCount: formData.get('purpleItemCount'),
-    peopleCount: formData.get('purplePeopleCount'),
-  }, {
-    name: "redItem",
-    itemCount: formData.get('redItemCount'),
-    peopleCount: formData.get('redPeopleCount'),
-  }, {
-    name: "ring1Item",
-    itemCount: formData.get('ring1ItemCount'),
-    peopleCount: formData.get('ring1PeopleCount'),
-  }, {
-    name: "ring2Item",
-    itemCount: formData.get('ring2ItemCount'),
-    peopleCount: formData.get('ring2PeopleCount'),
-  }, {
-    name: "rockmoonItem",
-    itemCount: formData.get('rockmoonItemCount'),
-    peopleCount: formData.get('rockmoonPeopleCount'),
-  }, {
-    name: "seedItem",
-    itemCount: formData.get('seedItemCount'),
-    peopleCount: formData.get('seedPeopleCount'),
-  }, {
-    name: "yellowItem",
-    itemCount: formData.get('yellowItemCount'),
-    peopleCount: formData.get('yellowPeopleCount'),
-  }, {
-    name: "coinguildItem",
-    itemCount: formData.get('coinguildItemCount'),
-    peopleCount: formData.get('coinguildPeopleCount'),
-  }]
+  const list = [
+    {
+      name: "seedItem",
+      itemCount: formData.get('seedItemCount'),
+      peopleCount: formData.get('seedPeopleCount'),
+    },
+    {
+      name: "acc1Item",
+      itemCount: formData.get('acc1ItemCount'),
+      peopleCount: formData.get('acc1PeopleCount'),
+    },
+    {
+      name: "acc2Item",
+      itemCount: formData.get('acc2ItemCount'),
+      peopleCount: formData.get('acc2PeopleCount'),
+    },
+    {
+      name: "acc3Item",
+      itemCount: formData.get('acc3ItemCount'),
+      peopleCount: formData.get('acc3PeopleCount'),
+    },
+    {
+      name: "acc4Item",
+      itemCount: formData.get('acc4ItemCount'),
+      peopleCount: formData.get('acc4PeopleCount'),
+    }, {
+      name: "acc5Item",
+      itemCount: formData.get('acc5ItemCount'),
+      peopleCount: formData.get('acc5PeopleCount'),
+    }, {
+      name: "blueItem",
+      itemCount: formData.get('blueItemCount'),
+      peopleCount: formData.get('bluePeopleCount'),
+    },
+    {
+      name: "blue2Item",
+      itemCount: formData.get('blue2ItemCount'),
+      peopleCount: formData.get('blue2PeopleCount'),
+    }, {
+      name: "purpleItem",
+      itemCount: formData.get('purpleItemCount'),
+      peopleCount: formData.get('purplePeopleCount'),
+    }, {
+      name: "purple2Item",
+      itemCount: formData.get('purple2ItemCount'),
+      peopleCount: formData.get('purple2PeopleCount'),
+    }, {
+      name: "redItem",
+      itemCount: formData.get('redItemCount'),
+      peopleCount: formData.get('redPeopleCount'),
+    }, {
+      name: "red2Item",
+      itemCount: formData.get('red2ItemCount'),
+      peopleCount: formData.get('red2PeopleCount'),
+    }, {
+      name: "yellowItem",
+      itemCount: formData.get('yellowItemCount'),
+      peopleCount: formData.get('yellowPeopleCount'),
+    }, {
+      name: "yellow2Item",
+      itemCount: formData.get('yellow2ItemCount'),
+      peopleCount: formData.get('yellow2PeopleCount'),
+    }, {
+      name: "papirusItem",
+      itemCount: formData.get('papirusItemCount'),
+      peopleCount: formData.get('papirusPeopleCount'),
+    }, {
+      name: "rockmoonItem",
+      itemCount: formData.get('rockmoonItemCount'),
+      peopleCount: formData.get('rockmoonPeopleCount'),
+    }, {
+      name: "waterpurple",
+      itemCount: formData.get('waterpurpleCount'),
+      peopleCount: formData.get('waterpurplePeopleCount'),
+    }, {
+      name: "coinguildItem",
+      itemCount: formData.get('coinguildItemCount'),
+      peopleCount: formData.get('coinguildPeopleCount'),
+    }]
 
   let totalItem = 0;
   for (let index = 0; index < list.length; index++) {
