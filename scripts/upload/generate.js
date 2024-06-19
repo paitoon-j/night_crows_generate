@@ -184,7 +184,7 @@ function getItemFormData(formData, mapName) {
       peopleCount: formData.get('rockmoonPeopleCount'),
     }, {
       name: "waterpurpleItem",
-      itemCount: formData.get('waterpurpleCount'),
+      itemCount: formData.get('waterpurpleItemCount'),
       peopleCount: formData.get('waterpurplePeopleCount'),
     }, {
       name: "coinguildItem",
