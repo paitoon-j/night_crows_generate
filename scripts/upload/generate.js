@@ -1,0 +1,177 @@
+const form = document.querySelector('form');
+const resultDiv = document.getElementById('result');
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  resultDiv.textContent = 'กำลังประมวลผล...';
+
+  const userList = [];
+  const formData = new FormData(form);
+  const response = await fetch('/upload', { method: 'POST', body: formData });
+
+  if (!response.ok) {
+    resultDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
+    throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
+  }
+
+  const extractedName = await response.text();
+  const mapName = this.mapNameList(extractedName);
+  const data = this.getItemFormData(formData, mapName);
+  const peopleCount = this.getTotalPeopleCount(data);
+  const splitItem = this.getSplitItem(data);
+  const user = shuffleArray(mapName);
+  let count = 1;
+
+  if (mapName.length < splitItem.length) {
+    resultDiv.textContent = 'จำนวนคนน้อยกว่าจำนวนไอเท็ม';
+    throw new Error('จำนวนคนน้อยกว่าจำนวนไอเท็ม');
+  }
+
+  for (let i = 0; i < peopleCount; i++) {
+    if (i < splitItem.length) {
+      const replace = splitItem[i].name.replace("Item", "");
+      userList.push({
+        id: count + i,
+        name: user[i],
+        item: splitItem[i].name,
+        amount: splitItem[i].amount,
+        image: `/assets/${replace}.png`
+      });
+    }
+  }
+
+  // สร้างตาราง HTML
+  const table = document.createElement('table');
+  const headerRow = table.insertRow();
+  headerRow.insertCell().textContent = 'ลำดับ';
+  headerRow.insertCell().textContent = 'ชื่อ';
+  headerRow.insertCell().textContent = 'รายการ';
+  headerRow.insertCell().textContent = 'จำนวน';
+
+  for (const user of userList) {
+    const row = table.insertRow();
+    row.insertCell().textContent = user.id;
+    row.insertCell().textContent = user.name;
+
+    const imageCell = row.insertCell();
+    const img = document.createElement('img');
+    img.src = user.image;
+    img.alt = user.name;
+    img.style.width = '50px';
+    imageCell.appendChild(img);
+
+    row.insertCell().textContent = user.amount;
+  }
+
+  resultDiv.innerHTML = ''; // ล้างเนื้อหาเดิม
+  resultDiv.appendChild(table);
+});
+
+function mapNameList(extractedName) {
+  const nameList = [];
+  nameList.push(extractedName);
+  const arr = extractedName.split("-");
+  const cleanedArr = arr.filter(item => item.trim() !== '').map(item => item.trim());
+  return cleanedArr;
+}
+
+function getSplitItem(data) {
+  let list = [];
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i];
+    let remainingItemCount = element.itemCount;
+    let baseAmount = Math.floor(element.itemCount / element.peopleCount); // จำนวนพื้นฐานที่แต่ละคนจะได้รับ
+
+    for (let j = 0; j < element.peopleCount; j++) {
+      let amount = baseAmount;
+      if (j < remainingItemCount % element.peopleCount) {
+        amount++; // เพิ่มให้คนที่เหลือถ้ามีไอเทมเหลือ
+      }
+      remainingItemCount--;
+
+      list.push({
+        name: element.name,
+        amount: amount,
+      });
+    }
+  }
+  console.log(list);
+  return list;
+}
+
+function getTotalPeopleCount(data) {
+  let peopleCount = 0;
+  data.forEach(item => {
+    peopleCount += Number(item.itemCount);
+  });
+
+  return peopleCount;
+}
+
+function getItemFormData(formData, mapName) {
+  const list = [{
+    name: "blueItem",
+    itemCount: formData.get('blueItemCount'),
+    peopleCount: formData.get('bluePeopleCount'),
+  }, {
+    name: "papirusItem",
+    itemCount: formData.get('papirusItemCount'),
+    peopleCount: formData.get('papirusPeopleCount'),
+  }, {
+    name: "purpleItem",
+    itemCount: formData.get('purpleItemCount'),
+    peopleCount: formData.get('purplePeopleCount'),
+  }, {
+    name: "redItem",
+    itemCount: formData.get('redItemCount'),
+    peopleCount: formData.get('redPeopleCount'),
+  }, {
+    name: "ring1Item",
+    itemCount: formData.get('ring1ItemCount'),
+    peopleCount: formData.get('ring1PeopleCount'),
+  }, {
+    name: "ring2Item",
+    itemCount: formData.get('ring2ItemCount'),
+    peopleCount: formData.get('ring2PeopleCount'),
+  }, {
+    name: "rockmoonItem",
+    itemCount: formData.get('rockmoonItemCount'),
+    peopleCount: formData.get('rockmoonPeopleCount'),
+  }, {
+    name: "seedItem",
+    itemCount: formData.get('seedItemCount'),
+    peopleCount: formData.get('seedPeopleCount'),
+  }, {
+    name: "yellowItem",
+    itemCount: formData.get('yellowItemCount'),
+    peopleCount: formData.get('yellowPeopleCount'),
+  }, {
+    name: "coinguildItem",
+    itemCount: formData.get('coinguildItemCount'),
+    peopleCount: formData.get('coinguildPeopleCount'),
+  }]
+
+  let totalItem = 0;
+  for (let index = 0; index < list.length; index++) {
+    totalItem += Number(list[index].peopleCount);
+  }
+
+  let totalName = mapName.length - totalItem;
+  const monneyList = {
+    name: "monneyItem",
+    itemCount: formData.get('monneyItemCount'),
+    peopleCount: totalName,
+  }
+
+  list.push(monneyList);
+  const filter = list.filter(x => x.peopleCount > 0);
+  return filter;
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}

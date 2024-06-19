@@ -1,0 +1,120 @@
+body {
+  font-family: sans-serif;
+  background-color: #f8f8f8; /* พื้นหลังสีอ่อน */
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.item-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+
+}
+
+.item img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.item-details label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.item-details input[type="number"] {
+  width: 80px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+.upload-section {
+  text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+  margin-top: 30px; /* เพิ่มระยะห่างด้านบน */
+}
+
+.upload-section h1 {
+  margin-bottom: 10px; /* ลดระยะห่างระหว่าง h1 กับ input */
+}
+
+.upload-section input[type="file"] {
+  display: none; /* ซ่อน input type="file" แบบเดิม */
+}
+
+.upload-section label[for="image"] { /* ปุ่มเลือกไฟล์ */
+  background-color: #007bff; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block; 
+}
+
+.upload-section button[type="submit"] { /* ปุ่ม Generate */
+  background-color: #28a745; 
+  color: white;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block; /* ปรับให้ปุ่มอยู่บรรทัดใหม่ */
+  margin: 10px auto; /* จัดกึ่งกลาง */
+  font-size: 18px; /* หรือขนาดที่ต้องการ */
+}
+
+#imagePreview {
+  max-width: 200px; /* ตัวอย่าง: กำหนดขนาดสูงสุด */
+  margin-top: 10px; /* ตัวอย่าง: เพิ่มระยะห่างด้านบน */
+  display: block; /* ป้องกันปัญหาช่องว่างด้านล่างรูปภาพ */
+  margin: 10px auto; /* จัดรูปภาพให้อยู่กึ่งกลาง */
+}
+
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  font-family: 'Kanit', sans-serif; /* เปลี่ยนฟอนต์เป็น Kanit */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้ตาราง */
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center; /* จัดข้อความทั้งหมดให้อยู่กึ่งกลาง */
+}
+
+th {
+  background-color: #007bff; /* เปลี่ยนสีพื้นหลัง header เป็นสีน้ำเงิน */
+  color: white; /* เปลี่ยนสีตัวอักษร header เป็นสีขาว */
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* เปลี่ยนสีพื้นหลังแถวคู่ */
+}
+
+/* สไตล์สำหรับรูปภาพ */
+.item-image {
+  /* ... (ส่วนเดิมของ CSS) ... */
+  display: block;       /* ทำให้รูปภาพเป็น block-level element */
+  margin: 0 auto;     /* จัดกึ่งกลางรูปภาพในแนวนอน */
+}
+
+/* สไตล์สำหรับจำนวน */
+td:nth-child(3) { /* เลือกคอลัมน์ที่ 3 (จำนวน) */
+  text-align: center; /* จัดข้อความตรงกลาง */
+}
