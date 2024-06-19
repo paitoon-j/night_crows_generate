@@ -16,7 +16,7 @@ async function extractNameFromImage(imagePath) {
         const imageBuffer = await fs.readFile(imagePath);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent([
-            "แยกชื่อจากภาพและลบสัญลักษณ์ออกทั้งหมดจนเหลือแต่ชื่อ ยกตัวอย่างเช่น - Eytenn - Eyten - CZESPass",
+            "Extract characters from an image, remove symbols or punctuation, and eliminate duplicate characters.",
             { inlineData: { data: imageBuffer.toString("base64"), mimeType: "image/*" } }
         ]);
         return result.response.text();
