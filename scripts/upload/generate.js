@@ -95,7 +95,6 @@ function getSplitItem(data) {
       });
     }
   }
-  console.log(list);
   return list;
 }
 
@@ -164,7 +163,7 @@ function getItemFormData(formData, mapName) {
   }
 
   list.push(monneyList);
-  const filter = list.filter(x => x.peopleCount > 0);
+  const filter = list.filter(x => x.peopleCount > 0 || x.name != "monneyItem");
   return filter;
 }
 
