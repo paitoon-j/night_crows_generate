@@ -17,8 +17,6 @@ form.addEventListener('submit', async (event) => {
     const splitItem = this.getSplitItem(data);
     const user = shuffleArray(mapName);
 
-    console.log(extractedName);
-
     if (mapName.length < splitItem.length) {
       resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
       throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
@@ -78,10 +76,19 @@ function mapNameList(extractedName) {
   return cleanedArr;
 }
 
+function getTotalPeopleCount(data) {
+  let peopleCount = 0;
+  data.forEach(item => {
+    peopleCount += Number(item.itemCount);
+  });
+
+  return peopleCount;
+}
+
 function getSplitItem(data) {
   const result = [];
 
-  const itemsToSplit = data.filter(item => parseInt(item.itemCount, 10) > 0);
+  const itemsToSplit = data.filter(item => parseInt(item.itemCount, 10) > 0 || item.name == "monneyItem");
 
   for (const item of itemsToSplit) {
     const totalAmount = parseInt(item.itemCount, 10);
