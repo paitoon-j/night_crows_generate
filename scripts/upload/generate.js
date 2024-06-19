@@ -86,7 +86,7 @@ function getSplitItem(data) {
     for (let j = 0; j < element.peopleCount; j++) {
       let amount = baseAmount;
       if (j < remainingItemCount % element.peopleCount) {
-        amount++; // เพิ่มให้คนที่เหลือถ้ามีไอเทมเหลือ
+        amount++;
       }
       remainingItemCount--;
 
