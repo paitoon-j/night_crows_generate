@@ -79,36 +79,34 @@ function mapNameList(extractedName) {
 }
 
 function getSplitItem(data) {
-  let list = [];
-  for (let i = 0; i < data.length; i++) {
-    const element = data[i];
-    let remainingItemCount = element.itemCount;
-    let baseAmount = Math.floor(element.itemCount / element.peopleCount);
-    let monneyAmount = element.itemCount / element.peopleCount;
+  const result = [];
 
-    for (let j = 0; j < element.peopleCount; j++) {
+  const itemsToSplit = data.filter(item => parseInt(item.itemCount, 10) > 0);
+
+  for (const item of itemsToSplit) {
+    const totalAmount = parseInt(item.itemCount, 10);
+    const peopleCount = parseInt(item.peopleCount, 10);
+    const baseAmount = Math.floor(totalAmount / peopleCount);
+    const extraAmount = totalAmount % peopleCount;
+
+    for (let i = 0; i < peopleCount; i++) {
       let amount = baseAmount;
-      if (j < remainingItemCount % element.peopleCount) {
+      if (i < extraAmount) {
         amount++;
       }
-      remainingItemCount--;
 
-      if (element.name == "monneyItem") {
-        amount = monneyAmount.toFixed(2)
+      if (item.name === "monneyItem" || item.name === "coinguildItem") {
+        amount = (totalAmount / peopleCount).toFixed(2);
       }
 
-      if (element.name == "coinguildItem") {
-        amount = monneyAmount.toFixed(2)
-      }
-
-      list.push({
-        name: element.name,
+      result.push({
+        name: item.name,
         amount: amount,
       });
     }
-
   }
-  return list;
+
+  return result;
 }
 
 function getItemFormData(formData, mapName) {
