@@ -18,8 +18,8 @@ form.addEventListener('submit', async (event) => {
     const user = shuffleArray(mapName);
 
     if (mapName.length < splitItem.length) {
-      resultDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
-      throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
+      resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
+      throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
     }
 
     for (let i = 0; i < splitItem.length; i++) {
