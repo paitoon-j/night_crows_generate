@@ -3,10 +3,10 @@ const genAI = new GoogleGenerativeAI("AIzaSyBTlkCDb-GRcwP7Sz6VYiT4NjZM8l8ESDM");
 const fs = require("fs").promises;
 const express = require("express");
 const multer = require("multer");
-const path = require('path');
-const server = express();
-const upload = multer({ dest: "uploads/" });
 
+const server = express();
+const path = require('path');
+const upload = multer({ dest: "uploads/" });
 
 server.use(express.static("scripts"));
 server.use(express.static(path.join(__dirname, 'public')));
@@ -49,6 +49,15 @@ server.get('/', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+
+const localtunnel = require('localtunnel');
+server.listen(port, async () => {
+    console.log(`Server running at http://localhost:${port}/`);
+
+    const tunnel = await localtunnel({
+        port: port,
+        subdomain: 'night-crows-generate',
+        local_https: false
+    });
+    console.log(`Tunnel opened at: ${tunnel.url}`);
 });
