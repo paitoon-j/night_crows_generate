@@ -50,14 +50,6 @@ server.get('/', (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-const localtunnel = require('localtunnel');
 server.listen(port, async () => {
     console.log(`Server running at http://localhost:${port}/`);
-
-    const tunnel = await localtunnel({
-        port: port,
-        subdomain: 'night-crows-generate',
-        local_https: false
-    });
-    console.log(`Tunnel opened at: ${tunnel.url}`);
 });
