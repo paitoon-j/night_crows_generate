@@ -16,10 +16,8 @@
 
   <form action="/upload" method="POST" enctype="multipart/form-data">
     <div class="upload-section">
-      <h2>อัปโหลดรูปภาพชื่อตัวละคร</h2>
-      <input type="file" name="image" id="image" accept="image/*">
-      <label for="image">เลือกไฟล์</label>
-      <img id="imagePreview" src="#" alt="Image Preview" style="display:none;">
+      <h2>ชื่อตัวละคร</h2>
+      <textarea name="item-text" id="item-text" placeholder="กรุณากรอกข้อความ"></textarea>
     </div>
 
     <h2>ไอเท็ม</h2>
@@ -201,7 +199,6 @@
   </form>
 
   <script src="upload/inputItem.js"></script>
-  <script src="upload/inputImage.js"></script>
   <script src="upload/generate.js"></script>
 </body>
 

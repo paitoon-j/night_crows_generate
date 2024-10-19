@@ -1,73 +1,64 @@
 const form = document.querySelector('form');
 const resultDiv = document.getElementById('result');
+const itemText = document.getElementById('item-text');
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  resultDiv.textContent = 'กำลังประมวลผล...';
-
-  const userList = [];
   const formData = new FormData(form);
-  const response = await fetch('/upload', { method: 'POST', body: formData });
+  const userList = [];
 
-  if (response.ok) {
-    let count = 1;
-    const extractedName = await response.text();
-    const mapName = this.mapNameList(extractedName);
-    const data = this.getItemFormData(formData, mapName);
-    const splitItem = this.getSplitItem(data);
-    const user = shuffleArray(mapName);
+  let count = 1;
+  const extractedName = itemText.value;
+  const mapName = this.mapNameList(extractedName);
+  const data = this.getItemFormData(formData, mapName);
+  const splitItem = this.getSplitItem(data);
+  const user = shuffleArray(mapName);
 
-    console.log(mapName);
-
-    if (mapName.length < splitItem.length) {
-      resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
-      throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
-    }
-
-    for (let i = 0; i < splitItem.length; i++) {
-      if (i < splitItem.length) {
-        const replace = splitItem[i].name.replace("Item", "");
-        userList.push({
-          id: count + i,
-          name: user[i],
-          item: splitItem[i].name,
-          amount: splitItem[i].amount,
-          image: `/assets/${replace}.png`
-        });
-      }
-    }
-
-    // สร้างตาราง HTML
-    const table = document.createElement('table');
-    const headerRow = table.insertRow();
-    headerRow.insertCell().textContent = 'ลำดับ';
-    headerRow.insertCell().textContent = 'ชื่อ';
-    headerRow.insertCell().textContent = 'รายการ';
-    headerRow.insertCell().textContent = 'จำนวน';
-
-    for (const user of userList) {
-      const row = table.insertRow();
-      row.insertCell().textContent = user.id;
-      row.insertCell().textContent = user.name;
-
-      const imageCell = row.insertCell();
-      const img = document.createElement('img');
-      img.src = user.image;
-      img.alt = user.name;
-      img.style.width = '50px';
-      imageCell.appendChild(img);
-
-      row.insertCell().textContent = user.amount;
-    }
-
-    resultDiv.innerHTML = ''; // ล้างเนื้อหาเดิม
-    resultDiv.appendChild(table);
+  if (mapName.length < splitItem.length) {
+    resultDiv.textContent = `จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`;
+    throw new Error(`จำนวนตัวละคร : ${mapName.length} / จำนวนรวมของแบ่งไอเท็ม : ${splitItem.length} (จำนวนตัวละครต้องมากกว่าหรือเท่ากับการแบ่งไอเท็ม)`);
   }
-  else {
-    resultDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
-    throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
+
+  for (let i = 0; i < splitItem.length; i++) {
+    if (i < splitItem.length) {
+      const replace = splitItem[i].name.replace("Item", "");
+      userList.push({
+        id: count + i,
+        name: user[i],
+        item: splitItem[i].name,
+        amount: splitItem[i].amount,
+        image: `/assets/${replace}.png`
+      });
+    }
   }
-});
+
+  // สร้างตาราง HTML
+  const table = document.createElement('table');
+  const headerRow = table.insertRow();
+  headerRow.insertCell().textContent = 'ลำดับ';
+  headerRow.insertCell().textContent = 'ชื่อ';
+  headerRow.insertCell().textContent = 'รายการ';
+  headerRow.insertCell().textContent = 'จำนวน';
+
+  for (const user of userList) {
+    const row = table.insertRow();
+    row.insertCell().textContent = user.id;
+    row.insertCell().textContent = user.name;
+
+    const imageCell = row.insertCell();
+    const img = document.createElement('img');
+    img.src = user.image;
+    img.alt = user.name;
+    img.style.width = '50px';
+    imageCell.appendChild(img);
+
+    row.insertCell().textContent = user.amount;
+  }
+
+  resultDiv.innerHTML = ''; // ล้างเนื้อหาเดิม
+  resultDiv.appendChild(table);
+}
+);
 
 function mapNameList(extractedName) {
   const nameList = [];
